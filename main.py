@@ -1,4 +1,5 @@
 import argparse
+import pprint
 from simulate import simulate
 
 # Players are represented by a number which is the value for their skill/"ELO"
@@ -46,6 +47,8 @@ else:
 
 # Execute the simulation
 result = simulate(players, args.totalSteps, args.rate, args.matchSize)
-print(result)
+
+pp = pprint.PrettyPrinter(indent=1)
+pp.pprint(result)
 
 print('done')
