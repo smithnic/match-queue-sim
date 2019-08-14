@@ -6,8 +6,8 @@ from simulate import simulate
 # To simulate continuous time, increase amount of steps and decrease the rate players are introduced
 
 ''' TODO
-- Generate a pool of players of a given size
-	- Must provide minimum skill rating, maximum skill rating and generate normal distribution
+- Give players some 'ID' Value
+- Run matchmaking multiple times
 '''
 parser = argparse.ArgumentParser(description='Simulate a matchmaking scenario')
 
@@ -19,7 +19,9 @@ parser.add_argument('rate', metavar='rate', type=float, help='A Value between 0 
 
 parser.add_argument('matchSize', metavar='matchSize', type=int, help='Number of players which forms a match')
 
-parser.add_argument('--playersFile', dest='playersFile', metavar='filePath', type=argparse.FileType('r'), required=False)
+parser.add_argument('playersFile', metavar='filePath', type=argparse.FileType('r'))
+
+parser.add_argument('-v', action='store_true', help='Enable verbose output')
 
 args = parser.parse_args()
 
@@ -36,19 +38,14 @@ if (args.matchSize <= 0):
 	print('matchSize must be positive')
 	quit()
 
-if (not args.playersFile):
-	print('Not using playersFile, generating players')
-	# TODO use numpy to generate a normal distribution of players
-else:
-	print('Using provided playersFile')
-	with args.playersFile as playersFile:
-		# Split the file by whitespace to convert into list of integers
-		players = list(map(int, playersFile.read().split()))
+with args.playersFile as playersFile:
+	# Split the file by whitespace to convert into list of integers
+	players = list(map(int, playersFile.read().split()))
 
-# Execute the simulation
-result = simulate(players, args.totalSteps, args.rate, args.matchSize)
+# Execute the matchmaking simulation
+result = simulate(players, args.totalSteps, args.rate, args.matchSize, args.v)
 
+# Print results
 pp = pprint.PrettyPrinter(indent=1)
-pp.pprint(result)
 
-print('done')
+pp.pprint(result['matchResults'])
