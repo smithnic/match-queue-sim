@@ -5,11 +5,13 @@ import numpy as np
 # Runs the simulation with the provided arguments
 def simulate(playerList, totalSteps, rate, matchSize, verbose):
 	random.seed()
-	if (verbose): print('Making matches of size', matchSize, ', running for # steps', totalSteps)
+	if (verbose and totalSteps > 0): print('Running for max # steps', totalSteps)
+	elif (verbose): print('Running until all players matched, or not enough left to make a match')
 	matches = []
 	queue = []
 	queueLenAtTimeT = []
-	for t in range(1, totalSteps):
+	t = 1
+	while (totalSteps == 0 or t <= totalSteps):
 		queueLenAtTimeT.append(len(queue))
 		endTime = t
 		# Decide whether a player joins the queue at time t
@@ -24,8 +26,9 @@ def simulate(playerList, totalSteps, rate, matchSize, verbose):
 			queue = matching['queue']
 			matches.extend(matching['matches'])
 		
-		if (len(playerList) == 0 and len(queue) == 0):
+		if (len(playerList) == 0 and len(queue) < matchSize):
 			break
+		t+=1
 
 	if (verbose): print('Done matching, ran through time', t)
 
@@ -72,7 +75,7 @@ def matchmake2(queue, currentTime, matchSize, matchAccumulator=[]):
 		skillList = list(map((lambda x: x['skill']), group))
 		mean = np.mean(skillList)
 		stddev = np.std(skillList)
-		if (stddev <= 0.5):
+		if (stddev <= (mean / 10)):
 			# Found a match, greedily use the first
 			newQueue = [x for x in queue if x not in group]
 			matchAccumulator.append({ 'players': group, 'timeCreated': currentTime })
