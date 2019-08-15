@@ -109,6 +109,7 @@ def simulate(players, iterations, match_size):
                     'median': np.median(abs_delta_list),
                     'variance': np.var(abs_delta_list),
                     'standard deviation': np.std(abs_delta_list),
+                    'sample standard deviation': np.std(abs_delta_list, ddof=1),
                     'minimum': np.min(abs_delta_list),
                     'maximum': np.max(abs_delta_list)}
 
