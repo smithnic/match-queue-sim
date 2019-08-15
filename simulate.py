@@ -3,7 +3,8 @@ import random
 import numpy as np
 
 
-# Runs the simulation with the provided arguments
+# Runs the simulation of the matchmaking queue
+# TODO this is outdated for current player model
 def simulate_old(playerList, totalSteps, rate, matchSize, verbose):
     random.seed()
     if (verbose and totalSteps > 0):
@@ -99,19 +100,19 @@ def simulate(players, iterations, match_size):
             sim_match(match[0], match[1])
 
 
-	abs_delta_list = []
-	for player in players:
-		abs_delta_list.append(abs(player.true_skill - player.est_skill))
+        abs_delta_list = []
+        for player in players:
+            abs_delta_list.append(abs(player.true_skill - player.est_skill))
 
-	data_map = {'size': len(abs_delta_list),
-				'mean': np.mean(abs_delta_list),
-				'median': np.median(abs_delta_list),
-				'variance': np.var(abs_delta_list),
-				'standard deviation': np.std(abs_delta_list),
-				'minimum': np.min(abs_delta_list),
-				'maximum': np.max(abs_delta_list)}
+        data_map = {'size': len(abs_delta_list),
+                    'mean': np.mean(abs_delta_list),
+                    'median': np.median(abs_delta_list),
+                    'variance': np.var(abs_delta_list),
+                    'standard deviation': np.std(abs_delta_list),
+                    'minimum': np.min(abs_delta_list),
+                    'maximum': np.max(abs_delta_list)}
 
-	return {'players': players, 'skill level difference stats': data_map}
+        return {'players': players, 'skill level difference stats': data_map}
 
 
 # Creates an array of matches of the given size by randomly assigning players to matches
@@ -141,23 +142,11 @@ def random_matchmake(players, match_size):
 
 # Simulates a match between two teams and adjusts their players' Elo rankings accordingly
 def sim_match(team_a, team_b):
-    team_a_true_avg = 0
-    team_a_est_avg = 0
-    a_size = len(team_a)
-    for player in team_a:
-        team_a_true_avg += player.true_skill
-        team_a_est_avg += player.est_skill
-    team_a_true_avg /= a_size
-    team_a_est_avg /= a_size
+    team_a_true_avg = np.mean(list(map(lambda x: x.true_skill, team_a)))
+    team_a_est_avg = np.mean(list(map(lambda x: x.est_skill, team_a)))
 
-    team_b_true_avg = 0
-    team_b_est_avg = 0
-    b_size = len(team_b)
-    for player in team_b:
-        team_b_true_avg += player.true_skill
-        team_b_est_avg += player.est_skill
-    team_b_true_avg /= b_size
-    team_b_est_avg /= b_size
+    team_b_true_avg = np.mean(list(map(lambda x: x.true_skill, team_b)))
+    team_b_est_avg = np.mean(list(map(lambda x: x.est_skill, team_b)))
 
     a_wins = match_outcome(team_a_true_avg, team_b_true_avg)
 

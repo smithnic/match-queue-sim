@@ -10,6 +10,9 @@ class Player:
         self.id = id
         self.true_skill = true_skill
         self.est_skill = skill_mean
+    
+    def __repr__(self):
+        return str({ 'id': self.id, 'true_skill': self.true_skill, 'est_skill': self.est_skill })
 
 
 def generate_players(count, skill_mean, skill_std_dev):
