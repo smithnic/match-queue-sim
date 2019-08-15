@@ -24,10 +24,10 @@ parser.add_argument('-v', action='store_true', help='Enable verbose output')
 parser.add_argument('playerCount', metavar='playerCount', type=int,
     help='Number of players in the simulation; must be divisble by 2 and also match size')
 
-parser.add_argument('skillMean', metavar='skillMean', type=float,
+parser.add_argument('skillMean', metavar='skillMean', type=int,
     help='Average true skill level of players in the simulation')
 
-parser.add_argument('skillStdDev', metavar='skillStdDev', type=float,
+parser.add_argument('skillStdDev', metavar='skillStdDev', type=int,
 					help='Standard deviation for true skill for players in the simulation')
 
 args = parser.parse_args()

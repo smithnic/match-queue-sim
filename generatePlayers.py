@@ -22,7 +22,7 @@ def generate_players(count, skill_mean, skill_std_dev):
     for x in range(count):
         skill = -1
         while skill < 0:
-            skill = np.random.normal(loc=skill_mean, scale=skill_std_dev)
+            skill = int(np.random.normal(loc=skill_mean, scale=skill_std_dev))
 
         new_player = Player(x, skill, skill_mean)
         players.append(new_player)

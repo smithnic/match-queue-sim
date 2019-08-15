@@ -112,7 +112,7 @@ def simulate(players, iterations, match_size):
                     'minimum': np.min(abs_delta_list),
                     'maximum': np.max(abs_delta_list)}
 
-        return {'players': players, 'skill level difference stats': data_map}
+    return {'players': players, 'skill level difference stats': data_map}
 
 
 # Creates an array of matches of the given size by randomly assigning players to matches
@@ -177,4 +177,4 @@ def elo_probability(elo1, elo2):
 # Returns how many points are added to the winner's Elo ranking
 def estimated_elo_change(winning_elo, losing_elo):
     winning_prob = elo_probability(winning_elo, losing_elo)
-    return 32.0 * (1.0 - winning_prob)
+    return int(np.round(32.0 * (1.0 - winning_prob)))
