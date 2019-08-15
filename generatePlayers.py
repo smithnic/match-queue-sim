@@ -1,24 +1,27 @@
-import argparse
 import numpy as np
+
 
 # Assume traditional ELO system with mean of 1500 (50th percentile)
 # Generate a normal distribution around this mean
 
-parser = argparse.ArgumentParser(description='Generate a normal distribution of players (ELOs) to use in a simulation.')
+class Player:
 
-parser.add_argument('listSize', metavar='n', type=int, help='The size of the generated list')
+    def __init__(self, id, true_skill, skill_mean):
+        self.id = id
+        self.true_skill = true_skill
+        self.est_skill = skill_mean
 
-args = parser.parse_args()
 
-# Argument Validation
-if (args.listSize <= 0):
-	print('Size must be positive')
-	quit()
+def generate_players(count, skill_mean, skill_std_dev):
 
-mean = 1500
+    players = []
 
-randomNums = np.random.normal(loc=mean, scale=(mean/3), size=args.listSize)
-randomInts = list(map(int, (np.round(randomNums))))
+    for x in range(count):
+        skill = -1
+        while skill < 0:
+            skill = np.random.normal(loc=skill_mean, scale=skill_std_dev)
 
-# Print the result to be redirected to a players list file
-print(*randomInts)
+        new_player = Player(x, skill, skill_mean)
+        players.append(new_player)
+
+    return players
